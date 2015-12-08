@@ -9,7 +9,7 @@ Running:
 4. Log in as user 'james007', password 'password' to explore the experiments
 
 
-Dependences:
+Dependencies:
 ------------
 1. `pip install django`
 2. `pip install django-bootstrap3`
