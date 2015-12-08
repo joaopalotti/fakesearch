@@ -1,0 +1,25 @@
+{% extends "fakesearch/base.html" %}
+
+{% block title %}Login to FakeSearch{% endblock %}
+
+{% block body_block %}
+<div class="jumbotron">
+        <form class="form" id="login_form" method="post" action="/fakesearch/login/">
+
+            {% if bad_details %}
+            <div class="alert alert-danger" role="alert">
+                <p><strong>Your username and/or password were incorrect!</strong></p>
+            </div>
+            {% elif disabled_account %}
+            <p><strong>Your Rango account is currently disabled; we can't log you in!</strong></p>
+            {% endif %}
+
+            {% csrf_token %}
+            <p> Username: <input class="input-block-level" type="text" name="username" value="" size="50" /></p>
+            <p> Password: <input type="password" name="password" value="" size="50" /></p>
+            <input class="btn btn-primary" type="submit" value="Log me in!" />
+        </form>
+    <br/>
+    <p> Not registered yet? <a href="/fakesearch/register/">Register Here</a> </p>
+</div>
+{% endblock %}

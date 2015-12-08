@@ -1,0 +1,59 @@
+{% extends "fakesearch/base.html" %}
+
+{% block title %} Running Experiment {% endblock %}
+
+{% block body_block %}
+
+{% if not user.is_authenticated %}
+    <div class="jumbotron">
+        <p> <strong> Please register to use this resource! </strong> </p>
+    </div>
+{% endif %}
+
+{% if experiment %}
+<div class="panel panel-default" id="external_panel">
+    <div class="panel-heading">Query: Bla Bla Bla</div>
+    <div class="panel-body">
+        
+        <div class=row> 
+            <div class="panel panel-default col-sm-6">
+                {% for document in experiment.result_listA.doclist.all %}
+                {{document}}
+                {% endfor %}
+            </div>
+
+            <div class="panel panel-default col-sm-6">
+                {% for document in experiment.result_listB.doclist.all %}
+                {{document}}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+{% else %}
+    <strong> This experiment was not found. Please contact the admin! </strong>
+{% endif %}
+    
+<form id="experiment_form" method="post" action="/fakesearch/run_experiment/{{ experiment.id }}/">
+    {% csrf_token %}
+    <br/>
+    <!-- Preference: <input type="text" name="preference" value="" size="10" /-->
+    <div class="btn-group" data-toggle="buttons">
+        <label class="btn btn-primary">
+            <input type="radio" name="preference" id="option1" autocomplete="off" checked> List A
+       </label>
+        <label class="btn btn-primary">
+            <input type="radio" name="preference" id="option2" autocomplete="off"> List B
+        </label>
+        <label class="btn btn-primary">
+            <input type="radio" name="preference" id="option3" autocomplete="off"> None
+        </label>
+    </div> 
+    <br/>
+    <br/>
+    <input class="btn btn-primary" type="submit" value="Chose best!" />
+</form>
+
+{% endblock %}
+

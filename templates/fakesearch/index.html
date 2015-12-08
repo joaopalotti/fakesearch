@@ -1,0 +1,24 @@
+{% extends "fakesearch/base.html" %}
+
+{% block title %}FakeSearch{% endblock %}
+
+{% block active_menu %}
+    <li class="active"><a href="/fakesearch/#">Home</a></li>
+    <li><a href="/fakesearch/about/">About</a></li>
+{% endblock %}
+
+{% block body_block %}
+
+    <div class="jumbotron">
+    {% if user.is_authenticated %}
+        <h1>Hey {{ user.username }}!</h1>
+        <h2> Let's start the <a href="/fakesearch/experiment/">experiments!</a> </h2>
+    {% else %}
+        <h1>Welcome to FakeSearch!</h1>
+        <p> Please <a href="/fakesearch/login/">log in here</a> to start.<br /> </p>
+        <p> If you don't have a login yet, <a href="/fakesearch/register/">register here</a><br /> </p>
+    {% endif %}
+
+    </div>
+
+{% endblock %}

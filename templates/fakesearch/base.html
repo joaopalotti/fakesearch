@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+{% load bootstrap3 %}
+
+<html lang="en" hola_ext_inject="disabled" class="gr__getbootstrap_com"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <link rel="icon" href="http://33charts.com/wp-content/uploads/2011/04/search.png">
+
+{% block title_block %}
+    <title>FakeSearch</title>
+{% endblock %}
+
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    
+    <!-- link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" -->
+    <!-- link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css" -->
+    <link href="https://getbootstrap.com/examples/starter-template/starter-template.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/fakesearch.css' %}">
+
+  </head>
+
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        <a class="navbar-brand" href="/fakesearch/">Fake Search</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            {% block active_menu %}
+            <li class="active"><a href="/fakesearch/#">Home</a></li>
+            <li><a href="/fakesearch/about/">About</a></li>
+            {% endblock %}
+          </ul>
+
+          {% if user.is_authenticated %}
+          <ul class="nav navbar-nav navbar-right">
+              <li><a href="/fakesearch/profile/"><span class="glyphicon glyphicon-cog" aria-hidden=true></span> Settings</a></li>
+            <li><a href="/fakesearch/logout/">Logout</a></li>
+          </ul>
+          {% endif %}
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container">
+
+      <div class="starter-template">
+
+        {% block body_block %}
+        <!-- Enter here whatever you want to customize -->
+        {% endblock %}
+
+      </div>
+
+    </div><!-- /.container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="http://getbootstrap.com/assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="http://getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
+  
+
+</body><span class="gr__tooltip"><span class="gr__tooltip-content"></span><i class="gr__tooltip-logo"></i><span class="gr__triangle"></span></span></html>
