@@ -1,6 +1,12 @@
 
-h1 a {
-    color: #FCA205;
+.docurl { 
+    color: #6D8067;
+    font-size: 15px; 
 }
 
+.doctitle { 
+    color: #0000FF;
+    font-family:arial; 
+    font-size: 20px; 
+}
 
