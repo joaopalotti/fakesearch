@@ -25,6 +25,8 @@ class Query(models.Model):
 
 class Document(models.Model):
     docname = models.CharField(max_length=32)
+    title   = models.CharField(max_length=128)
+    url     = models.URLField()
     snippet = models.CharField(max_length=512)
 
     def __unicode__(self):

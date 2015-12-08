@@ -13,15 +13,15 @@ def populate():
     user_james = add_user('james007', 'password')
     user_paul = add_user('paul21', 'password')
 
-    query_1 = add_query("1", "Query 1")
+    query_1 = add_query("1", "Queryqwer 1 asdf")
     query_2 = add_query("2", "Query 2")
 
-    document_1 = add_document("1", "This is the text of document 1")
-    document_2 = add_document("2", "This is the text of document 2")
-    document_3 = add_document("3", "This is the text of document 3")
-    document_4 = add_document("4", "This is the text of document 4")
-    document_5 = add_document("5", "This is the text of document 5")
-    document_6 = add_document("6", "This is the text of document 6")
+    document_1 = add_document("1", "Document title 1", "This is the text of document 1", "http://example1.com")
+    document_2 = add_document("2", "Document title 2", "This is the text of document 2", "http://example2.com")
+    document_3 = add_document("3", "Document title 3", "This is the text of document 3", "http://example3.com")
+    document_4 = add_document("4", "Document title 4", "This is the text of document 4", "http://example4.com")
+    document_5 = add_document("5", "Document title 5", "This is the text of document 5", "http://example5.com")
+    document_6 = add_document("6", "Document title 6", "This is the text of document 6", "http://example6.com")
 
     resultlist = {}
     documents_in_list = {}
@@ -82,8 +82,8 @@ def add_query(qid, text):
     q.save()
     return q
 
-def add_document(docname, snippet):
-    d = Document.objects.get_or_create(docname=docname)[0]
+def add_document(docname, title, snippet, url):
+    d = Document.objects.get_or_create(docname=docname, title=title, url=url)[0]
     d.snippet = snippet
     d.save()
     return d
