@@ -1,5 +1,5 @@
 import os
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'fakesearch.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myproject.settings')
 
 import django
 django.setup()
