@@ -3,8 +3,8 @@
 {% block title %}FakeSearch{% endblock %}
 
 {% block active_menu %}
-    <li><a href="/fakesearch/#">Home</a></li>
-    <li class="active"><a href="/fakesearch/about/">About</a></li>
+    <li><a href="{% url 'fakesearch:index' %}">Home</a></li>
+    <li class="active"><a href="{% url 'fakesearch:about' %}">About</a></li>
 {% endblock %}
 
 {% block body_block %}

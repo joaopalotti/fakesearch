@@ -50,7 +50,7 @@
     <strong> This experiment was not found. Please contact the admin! </strong>
 {% endif %}
     
-<form id="experiment_form" method="post" action="/fakesearch/run_experiment/{{ experiment.id }}/">
+<form id="experiment_form" method="post" action="{% url 'fakesearch:run_experiment' experiment.id %}/">
     {% csrf_token %}
     <div class="btn-group" data-toggle="buttons">
         {% for choice in experiment_form.preference %}

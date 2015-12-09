@@ -4,7 +4,7 @@
 
 {% block body_block %}
 <div class="jumbotron">
-        <form class="form" id="login_form" method="post" action="/fakesearch/login/">
+    <form class="form" id="login_form" method="post" action="{% url 'fakesearch:login' %}">
 
             {% if bad_details %}
             <div class="alert alert-danger" role="alert">
@@ -20,6 +20,6 @@
             <input class="btn btn-primary" type="submit" value="Log me in!" />
         </form>
     <br/>
-    <p> Not registered yet? <a href="/fakesearch/register/">Register Here</a> </p>
+    <p> Not registered yet? <a href="{% url 'fakesearch:register' %}">Register Here</a> </p>
 </div>
 {% endblock %}

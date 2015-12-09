@@ -165,7 +165,7 @@ def run_experiment(request, exp_pk):
         if experiment_form.is_valid():
             exp_instance = experiment_form.save()
 
-        return HttpResponseRedirect('/fakesearch/')
+        return HttpResponseRedirect('/fakesearch/experiment/')
 
     # it is just the GET method:
     else:

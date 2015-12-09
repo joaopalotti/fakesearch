@@ -6,9 +6,9 @@
     <div class="jumbotron">
     {% if registered %}
         <strong>Thank you for registering!</strong>
-        <a href="/fakesearch/">Return to the homepage.</a><br />
+        <a href="{% url 'fakesearch:index' %}">Return to the homepage.</a><br />
     {% else %}
-    <form class="form" id="user_form" method="post" action="/fakesearch/register/" enctype="multipart/form-data">
+       <form class="form" id="user_form" method="post" action="{% url 'fakesearch:register' %}" enctype="multipart/form-data">
             {% csrf_token %}
             {{ user_form  }}
             <br/>
