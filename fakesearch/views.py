@@ -8,7 +8,7 @@ from django.template import RequestContext
 from django.http import HttpResponseRedirect, HttpResponse
 # FakeSearch classes
 from fakesearch.models import ResultList, UserProfile, Experiment
-from fakesearch.forms import UserForm, UserProfileForm
+from fakesearch.forms import UserForm, UserProfileForm, ExperimentForm
 
 #####
 #### General screens
@@ -157,26 +157,22 @@ def experiment(request):
 def run_experiment(request, exp_pk):
 
     # TODO: check if experiment belongs to this user
-    # e = Experiment.objects.get(pk = exp_pk)
     e = get_object_or_404(Experiment, pk=exp_pk)
     context_dict = {'experiment' : e}
 
-    if not e:
-        print "ERROR HERE!!!!"
-
     if request.method == 'POST':
-        print "Dealing with a POST"
-        preference = request.POST.get('preference')
-        print preference
+        experiment_form = ExperimentForm(data=request.POST, instance=e)
+        if experiment_form.is_valid():
+            exp_instance = experiment_form.save()
 
-        # TODO: check if it is valid. Use a try here
-        e.preference = int(preference)
-        e.save()
-        # TODO: run next experiment as this one we already know what the user decided.
+        return HttpResponseRedirect('/fakesearch/')
+
     # it is just the GET method:
     else:
-        print "Dealing with a GET"
-        # No context variables to pass to the template system, hence the
-        # blank dictionary object...
+        data_dict = {'preference': e.preference}
+        experiment_form = ExperimentForm(initial=data_dict)
+        context_dict['chosen_preference'] = e.preference
+        context_dict['experiment_form'] = experiment_form
+
     return render(request, 'fakesearch/run_experiment.html', context_dict)
 

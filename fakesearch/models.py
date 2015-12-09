@@ -8,6 +8,12 @@ EXPERTISE_CHOICES = (
     (3, 'Expert'),
 )
 
+LIST_PREFERENCE = (
+    (1, 'Left List'),
+    (2, 'None'),
+    (3, 'Right List'),
+)
+
 class UserProfile(models.Model):
     # This line is required. Links UserProfile to a User model instance.
     user = models.OneToOneField(User)
@@ -39,7 +45,7 @@ class ResultList(models.Model):
     doclist = models.ManyToManyField(Document, through='ListOrder') # TODO: It creates a set (NOT A LIST) of Documents
 
     def __unicode__(self):
-        return "%s, %s" % (self.description, self.query.text)
+        return self.description
         #return "%s, First doc: %s " % (self.query.text, self.doclist.all()[0].docname)
         #return self.rlid
 
@@ -57,6 +63,9 @@ class Experiment(models.Model):
     result_listA = models.ForeignKey(ResultList, null=True, related_name='listA')
     result_listB = models.ForeignKey(ResultList, null=True, related_name='listB')
     preference = models.IntegerField(default=-1)
+
+    def user_preference(self):
+        return dict(LIST_PREFERENCE)[self.preference]
 
     def __unicode__(self):
         return "%s,%s,%s,%d" % (self.user.user.username, self.result_listA, self.result_listB, self.preference)

@@ -53,19 +53,18 @@
     
 <form id="experiment_form" method="post" action="/fakesearch/run_experiment/{{ experiment.id }}/">
     {% csrf_token %}
-    <br/>
-    <!-- Preference: <input type="text" name="preference" value="" size="10" /-->
     <div class="btn-group" data-toggle="buttons">
-        <label class="btn btn-primary">
-            <input type="radio" name="preference" id="1" autocomplete="off" checked> Left List
-       </label>
-        <label class="btn btn-primary">
-            <input type="radio" name="preference" id="2" autocomplete="off"> None
-        </label>
-        <label class="btn btn-primary">
-            <input type="radio" name="preference" id="3" autocomplete="off"> Right List
-        </label>
-    </div> 
+        {% for choice in experiment_form.preference %}
+            {% if choice.choice_label == experiment.user_preference %}
+                <label class="btn btn-primary active">
+            {% else %}
+                <label class="btn btn-primary ">
+            {% endif %}
+                {{ choice.tag }}
+                {{ choice.choice_label }}
+         </label>
+        {% endfor %}
+    </div>
     <br/>
     <br/>
     {% buttons %}
