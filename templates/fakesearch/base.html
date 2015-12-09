@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 {% load staticfiles %}
-{% load bootstrap3 %}
 
 <html lang="en" hola_ext_inject="disabled" class="gr__getbootstrap_com"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
@@ -12,12 +11,9 @@
 {% block title_block %}
     <title>FakeSearch</title>
 {% endblock %}
-
-    {% bootstrap_css %}
-    {% bootstrap_javascript %}
     
-    <!-- link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" -->
-    <!-- link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css" -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
     <link href="https://getbootstrap.com/examples/starter-template/starter-template.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/fakesearch.css' %}">
 

@@ -1,5 +1,4 @@
 {% extends "fakesearch/base.html" %}
-{% load bootstrap3 %}
 {% block title %}Register with FakeSearch{% endblock %}
     
 {% block body_block %}
@@ -11,13 +10,22 @@
     {% else %}
     <form class="form" id="user_form" method="post" action="/fakesearch/register/" enctype="multipart/form-data">
             {% csrf_token %}
-            {% bootstrap_form user_form  %}
-            {% bootstrap_form profile_form  %}
-            {% buttons %}
+            {{ user_form  }}
+            <br/>
+            <br/>
+            <div class="btn-group" data-toggle="buttons">
+                {% for choice in profile_form.expertise %}
+                    <label class="btn btn-primary ">
+                        {{ choice.tag }}
+                        {{ choice.choice_label }}
+                    </label>
+                {% endfor %}
+            </div>
+            <br/>
+            <br/>
             <button type="submit" class="btn btn-primary">
-              {% bootstrap_icon "star" %} Register
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Register
             </button>
-            {% endbuttons %}
         </form>
     {% endif %}
     </div>
