@@ -11,7 +11,6 @@ Running:
 Dependences:
 ------------
 1. `pip install django`
-2. `pip install django-bootstrap3`
 
 
 
