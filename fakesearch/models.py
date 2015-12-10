@@ -38,11 +38,9 @@ class Document(models.Model):
     def __unicode__(self):
         return self.docname
 
-# TODO: maybe lind result list and query with a throgh relation.
-
 class ResultList(models.Model):
     description = models.CharField(max_length=128, default="-")
-    doclist = models.ManyToManyField(Document, through='ListOrder') # TODO: It creates a set (NOT A LIST) of Documents
+    doclist = models.ManyToManyField(Document, through='ListOrder')
 
     def __unicode__(self):
         return self.description
@@ -57,17 +55,29 @@ class ListOrder(models.Model):
         return "%s, %s, %d" % (self.document.docname, self.resultlist.description, self.rank)
 
 class Experiment(models.Model):
-    # expid = models.CharField(max_length=128) # maybe a experiment description
-    user = models.ForeignKey(UserProfile)
+    # expid = models.CharField(max_length=128) # maybe a experiment description for human beings
     query = models.ForeignKey(Query)
     result_listA = models.ForeignKey(ResultList, null=True, related_name='listA')
     result_listB = models.ForeignKey(ResultList, null=True, related_name='listB')
+
+    def __unicode__(self):
+        return "%s,%s,%s" % (self.query.qid, self.result_listA, self.result_listB)
+        # return str(self.expid)
+
+class ExperimentSet(models.Model):
+    description = models.CharField(max_length=256)
+    experiments = models.ManyToManyField(Experiment)
+
+class UserExperimentSet(models.Model):
+    user = models.ForeignKey(UserProfile)
+    experimentSet = models.ForeignKey(ExperimentSet)
+
+class Vote(models.Model):
+    user = models.ForeignKey(UserProfile)
+    experiment = models.ForeignKey(Experiment)
     preference = models.IntegerField(default=-1)
 
     def user_preference(self):
         return dict(LIST_PREFERENCE)[self.preference]
 
-    def __unicode__(self):
-        return "%s,%s,%s,%d" % (self.user.user.username, self.result_listA, self.result_listB, self.preference)
-        # return str(self.expid)
 

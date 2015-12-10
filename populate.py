@@ -5,7 +5,7 @@ import django
 django.setup()
 
 from django.contrib.auth.models import User
-from fakesearch.models import UserProfile, Query, Document, ResultList, Experiment, ListOrder
+from fakesearch.models import UserProfile, Query, Document, ResultList, Experiment, ListOrder, ExperimentSet, Vote, UserExperimentSet
 
 def populate():
 
@@ -15,6 +15,7 @@ def populate():
 
     query_1 = add_query("1", "Queryqwer 1 asdf")
     query_2 = add_query("2", "Query 2")
+    query_3 = add_query("3", "This is query 3!")
 
     document_1 = add_document("1", "Document title 1", "This is the text of document 1", "http://example1.com")
     document_2 = add_document("2", "Document title 2", "This is the text of document 2", "http://example2.com")
@@ -49,24 +50,54 @@ def populate():
             list_order = ListOrder(document=document, resultlist = result_list, rank=i)
             list_order.save()
 
-    experiment_john_1 = add_experiment(user_john, query_1, resultlist[0], resultlist[1], -1)
-    experiment_john_2 = add_experiment(user_john, query_1, resultlist[1], resultlist[0], -1)
-    experiment_john_3 = add_experiment(user_john, query_2, resultlist[2], resultlist[0], -1)
-    experiment_john_4 = add_experiment(user_john, query_2, resultlist[0], resultlist[4], -1)
+    experiment_set_l1 = []
+    experiment_set_l1.append( add_experiment(query_1, resultlist[0], resultlist[2], -1) )
+    experiment_set_l1.append( add_experiment(query_1, resultlist[1], resultlist[0], -1) )
+    experiment_set_l1.append( add_experiment(query_1, resultlist[2], resultlist[1], -1) )
+    experiment_set_l1.append( add_experiment(query_1, resultlist[1], resultlist[1], -1) )
     # -----
-    experiment_james_1 = add_experiment(user_james, query_1, resultlist[0], resultlist[2], 1)
-    experiment_james_2 = add_experiment(user_james, query_1, resultlist[0], resultlist[4], 2)
-    experiment_james_3 = add_experiment(user_james, query_1, resultlist[1], resultlist[3], -1)
-    experiment_james_4 = add_experiment(user_james, query_2, resultlist[2], resultlist[1], -1)
+    experiment_set_l2 = []
+    experiment_set_l2.append( add_experiment(query_1, resultlist[0], resultlist[2], -1) )
+    experiment_set_l2.append( add_experiment(query_1, resultlist[0], resultlist[4], -1) )
+    experiment_set_l2.append( add_experiment(query_1, resultlist[1], resultlist[3], -1) )
     # -----
-    experiment_paul_1 = add_experiment(user_paul, query_2, resultlist[2], resultlist[5], 20)
+    experiment_set_l3 = []
+    experiment_set_l3.append( add_experiment(query_2, resultlist[2], resultlist[5], -1) )
+    experiment_set_l3.append( add_experiment(query_1, resultlist[2], resultlist[5], -1) )
+    experiment_set_l3.append( add_experiment(query_3, resultlist[1], resultlist[3], -1) )
 
-    # Print out what we have added to the user.
-    #for c in Category.objects.all():
-    #    for p in Page.objects.filter(category=c):
-    #        print "- {0} - {1}".format(str(c), str(p))
+    experiment_set_1 = add_experiment_set("", experiment_set_l1)
+    experiment_set_2 = add_experiment_set("", experiment_set_l2)
+    experiment_set_3 = add_experiment_set("", experiment_set_l3)
+
+    experiment_set_to_james = attributes_experiment_set(user_james, experiment_set_1)
+    experiment_set_to_paul  = attributes_experiment_set(user_paul, experiment_set_1)
+    experiment_set_to_john  = attributes_experiment_set(user_john, experiment_set_3)
+
+    add_votes(user_james, experiment_set_to_james)
+    add_votes(user_paul, experiment_set_to_paul)
+    add_votes(user_john, experiment_set_to_john)
 
     print "DONE!"
+
+def add_experiment_set(description, experiments):
+    es = ExperimentSet.objects.create(description=description)
+    es.save()
+    for exp in experiments:
+        es.experiments.add(exp)
+    return es
+
+def attributes_experiment_set(user, experiments):
+    ues = UserExperimentSet.objects.create(user=user, experimentSet=experiments)
+    ues.save()
+    return ues
+
+def add_votes(user, user_experiment_set):
+    exp = UserExperimentSet.objects.get(pk=user_experiment_set.id).experimentSet.experiments.get_queryset()
+    for e in exp:
+        v, created = Vote.objects.get_or_create(user=user, experiment=e)
+        v.preference = -1
+        v.save()
 
 def add_user(username, password='password'):
     u = User.objects.get_or_create(username=username)[0]
@@ -95,15 +126,10 @@ def add_resultlist(desc, doclists=[]):
         c.doclist.add(l)
     return c
 
-def add_experiment(user, query, listA, listB, preference):
-    e, created = Experiment.objects.get_or_create(user=user, result_listA=listA, result_listB=listB, query=query, preference=preference)
-    if created:
-        print "Created new Experiment"
-    else:
-        print "Just loaded experiment: user %s" % (user)
+def add_experiment(query, listA, listB, preference):
+    e = Experiment.objects.create(result_listA=listA, result_listB=listB, query=query)
     e.save()
-    #for l in lists:
-    #    e.result_lists.add(l)
+    return e
 
 # Start execution here!
 if __name__ == '__main__':

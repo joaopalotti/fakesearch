@@ -14,3 +14,5 @@ X (12) Change the hard links in the html pages to soft django magic links
 X (14) User has access to only his experiments
 X (15) Change view experiment to experiments
   (16) Update soft links using reverse in views.py
+X (17) Add concept of ExperimentSet
+X (18) Link new users to UserExperimentSet

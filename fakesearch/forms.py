@@ -1,5 +1,5 @@
 from django import forms
-from fakesearch.models import Experiment, UserProfile, ResultList, EXPERTISE_CHOICES, LIST_PREFERENCE
+from fakesearch.models import Experiment, UserProfile, ResultList, Vote, EXPERTISE_CHOICES, LIST_PREFERENCE
 from django.contrib.auth.models import User
 
 class UserForm(forms.ModelForm):
@@ -17,11 +17,10 @@ class UserProfileForm(forms.ModelForm):
         model = UserProfile
         fields = ('expertise',)
 
-class ExperimentForm(forms.ModelForm):
+class VoteForm(forms.ModelForm):
     preference = forms.ChoiceField(widget=forms.RadioSelect, choices=LIST_PREFERENCE)
 
-
     class Meta:
-        model = Experiment
+        model = Vote
         fields = ('preference',)
 

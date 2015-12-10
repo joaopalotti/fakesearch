@@ -8,9 +8,8 @@ from django.template import RequestContext
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 # FakeSearch classes
-from fakesearch.models import ResultList, UserProfile, Experiment
-from fakesearch.forms import UserForm, UserProfileForm, ExperimentForm
-
+from fakesearch.models import ResultList, UserProfile, Experiment, ExperimentSet, Vote, UserExperimentSet
+from fakesearch.forms import UserForm, UserProfileForm, VoteForm
 
 #####
 #### General screens
@@ -64,6 +63,9 @@ def register(request):
             # Logs in the user now:
             new_user = authenticate(username=request.POST['username'], password=request.POST['password'])
             login(request, new_user)
+
+            set_user_experiment_set(profile)
+
             return HttpResponseRedirect('/fakesearch/')
 
         # Invalid form or forms - mistakes or something else?
@@ -133,10 +135,22 @@ def user_profile(request):
     # Render the response and send it back!
     return render(request, 'fakesearch/profile.html', {})
 
+
+def set_user_experiment_set(user):
+    # Gets a random Experient Set
+    es = ExperimentSet.objects.order_by('?').first()
+    ues = UserExperimentSet.objects.create(user=user, experimentSet=es)
+    ues.save()
+
+    # Add votes:
+    for e in es.experiments.get_queryset():
+        v, created = Vote.objects.get_or_create(user=user, experiment=e)
+        v.preference = -1
+        v.save()
+
 #####
 #### Experiments
 #####
-
 @login_required
 def experiments(request):
     context = RequestContext(request)
@@ -146,7 +160,25 @@ def experiments(request):
     except:
         up = None
 
-    experiment_list = Experiment.objects.filter(user=up)
+    experiment_list = []
+    experiment_set = None
+    ues = UserExperimentSet.objects.get(user=up)
+
+    if ues:
+        experiment_set = ues.experimentSet.experiments
+
+    if experiment_set:
+        experiments = experiment_set.order_by("pk")
+        for experiment in experiments:
+            try:
+                preference = Vote.objects.get(user=up, experiment=experiment).preference
+            except:
+                preference = -1
+            experiment_list.append((experiment, preference))
+
+    else:
+        print "Not Found"
+
     context_dict = {'experiments': experiment_list}
 
     # Bad form (or form details), no form supplied...
@@ -163,23 +195,24 @@ def run_experiment(request, exp_pk):
     except:
         up = None
 
-    e = get_object_or_404(Experiment, pk=exp_pk, user=up)
+    e = get_object_or_404(Experiment, pk=exp_pk)
+    v = get_object_or_404(Vote, experiment=e, user=up)
 
     def getNeighbor(e, up, variation):
         try:
-            return Experiment.objects.get(pk = e.id + variation, user=up)
+            return UserExperimentSet.objects.get(user=up).experimentSet.experiments.get(pk = e.id + variation)
         except:
             return None
     next_exp = getNeighbor(e, up, +1)
     previous_exp = getNeighbor(e, up, -1)
 
-    context_dict = {'experiment' : e, 'next_exp': next_exp, 'previous_exp': previous_exp}
+    context_dict = {'experiment' : e, 'next_exp': next_exp, 'previous_exp': previous_exp, 'vote': v}
 
     if request.method == 'POST':
 
-        experiment_form = ExperimentForm(data=request.POST, instance=e)
-        if experiment_form.is_valid():
-            exp_instance = experiment_form.save()
+        vote_form = VoteForm(data=request.POST, instance=v)
+        if vote_form.is_valid():
+            vote_instance = vote_form.save()
 
         if 'next' in request.POST:
             e = next_exp
@@ -191,10 +224,8 @@ def run_experiment(request, exp_pk):
 
     # it is just the GET method:
     else:
-        data_dict = {'preference': e.preference}
-        experiment_form = ExperimentForm(initial=data_dict)
-        context_dict['chosen_preference'] = e.preference
-        context_dict['experiment_form'] = experiment_form
+        data_dict = {'preference': v.preference}
+        context_dict['vote_form'] = VoteForm(initial=data_dict)
 
     return render(request, 'fakesearch/run_experiment.html', context_dict)
 
