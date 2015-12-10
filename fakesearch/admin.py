@@ -1,12 +1,5 @@
 from django.contrib import admin
-from fakesearch.models import Category, Page, UserProfile, Query, Document, ResultList, Experiment, ListOrder
-
-# Add in this class to customized the Admin Interface
-class CategoryAdmin(admin.ModelAdmin):
-    prepopulated_fields = {'slug':('name',)}
-
-admin.site.register(Category, CategoryAdmin)
-admin.site.register(Page)
+from fakesearch.models import UserProfile, Query, Document, ResultList, Experiment, ListOrder
 
 admin.site.register(UserProfile)
 admin.site.register(Query)
