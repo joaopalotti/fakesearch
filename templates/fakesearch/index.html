@@ -6,7 +6,7 @@
     <li class="active"><a href="{% url 'fakesearch:index' %}">Home</a></li>
     <li><a href="{% url 'fakesearch:about' %}">About</a></li>
     {% if user.is_authenticated %}
-        <li><a href="{% url 'fakesearch:experiment' %}">Experiments</a></li>
+        <li><a href="{% url 'fakesearch:experiments' %}">Experiments</a></li>
     {% endif %}
 {% endblock %}
 
@@ -15,7 +15,7 @@
     <div class="jumbotron">
     {% if user.is_authenticated %}
         <h1>Hey {{ user.username }}!</h1>
-        <h2> Let's start the <a href="{% url 'fakesearch:experiment' %}">experiments!</a> </h2>
+        <h2> Let's start the <a href="{% url 'fakesearch:experiments' %}">experiments!</a> </h2>
     {% else %}
         <h1>Welcome to FakeSearch!</h1>
         <p> Please <a href="{% url 'fakesearch:login' %}">log in here</a> to start.<br /> </p>

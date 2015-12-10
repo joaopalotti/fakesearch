@@ -6,21 +6,19 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
 from django.template import RequestContext
 from django.http import HttpResponseRedirect, HttpResponse
+from django.core.urlresolvers import reverse
 # FakeSearch classes
 from fakesearch.models import ResultList, UserProfile, Experiment
 from fakesearch.forms import UserForm, UserProfileForm, ExperimentForm
 
-from django.core.urlresolvers import reverse
 
 #####
 #### General screens
 #####
 
 def index(request):
-    context_dict = {}
-
     # Render the response and send it back!
-    return render(request, 'fakesearch/index.html', context_dict)
+    return render(request, 'fakesearch/index.html', {})
 
 def about(request):
     return render(request, 'fakesearch/about.html', [])
@@ -140,7 +138,7 @@ def user_profile(request):
 #####
 
 @login_required
-def experiment(request):
+def experiments(request):
     context = RequestContext(request)
     u = User.objects.get(username=request.user)
     try:
@@ -148,12 +146,12 @@ def experiment(request):
     except:
         up = None
 
-    experiments = Experiment.objects.filter(user=up)
-    context_dict = {'experiments': experiments}
+    experiment_list = Experiment.objects.filter(user=up)
+    context_dict = {'experiments': experiment_list}
 
     # Bad form (or form details), no form supplied...
     # Render the form with error messages (if any).
-    return render(request, 'fakesearch/experiment.html', context_dict)
+    return render(request, 'fakesearch/experiments.html', context_dict)
 
 @login_required
 def run_experiment(request, exp_pk):
@@ -188,7 +186,7 @@ def run_experiment(request, exp_pk):
         if 'previous' in request.POST:
             e = previous_exp
         if 'done' in request.POST:
-            return HttpResponseRedirect(reverse('fakesearch:experiment'))
+            return HttpResponseRedirect(reverse('fakesearch:experiments'))
         return HttpResponseRedirect(reverse('fakesearch:run_experiment', args=(e.id,)))
 
     # it is just the GET method:

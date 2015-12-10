@@ -12,7 +12,7 @@ urlpatterns = [ url(r'^$', views.index, name='index'),
                        url(r'^profile/$', views.user_profile, name='profile'),
 
                        # Experiment related functions:
-                       url(r'^experiment', views.experiment, name='experiment'),
+                       url(r'^experiments/$', views.experiments, name='experiments'),
                        url(r'^run_experiment/(?P<exp_pk>[\w]+)/', views.run_experiment, name='run_experiment'),
               ]
 
