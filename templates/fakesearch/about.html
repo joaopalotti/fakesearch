@@ -5,6 +5,9 @@
 {% block active_menu %}
     <li><a href="{% url 'fakesearch:index' %}">Home</a></li>
     <li class="active"><a href="{% url 'fakesearch:about' %}">About</a></li>
+    {% if user.is_authenticated %}
+        <li><a href="{% url 'fakesearch:experiment' %}">Experiments</a></li>
+    {% endif %}
 {% endblock %}
 
 {% block body_block %}
