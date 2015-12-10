@@ -6,7 +6,7 @@ X (5) Display the result lists in a prettier way
 X (6) Change the preference form to an official validation form from django
   (7) List of experiments is crap, make it prettier
   (8) Write user profile page
-  (9) Create a link to next experiment
+X (9) Create a link to next experiment
 X (10) Create a link in the header to the experiments once the user is logged in
   (11) Add more information in the about tab
 X (12) Change the hard links in the html pages to soft django magic links

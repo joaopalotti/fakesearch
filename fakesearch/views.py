@@ -10,6 +10,8 @@ from django.http import HttpResponseRedirect, HttpResponse
 from fakesearch.models import ResultList, UserProfile, Experiment
 from fakesearch.forms import UserForm, UserProfileForm, ExperimentForm
 
+from django.core.urlresolvers import reverse
+
 #####
 #### General screens
 #####
@@ -164,14 +166,30 @@ def run_experiment(request, exp_pk):
         up = None
 
     e = get_object_or_404(Experiment, pk=exp_pk, user=up)
-    context_dict = {'experiment' : e}
+
+    def getNeighbor(e, up, variation):
+        try:
+            return Experiment.objects.get(pk = e.id + variation, user=up)
+        except:
+            return None
+    next_exp = getNeighbor(e, up, +1)
+    previous_exp = getNeighbor(e, up, -1)
+
+    context_dict = {'experiment' : e, 'next_exp': next_exp, 'previous_exp': previous_exp}
 
     if request.method == 'POST':
+
         experiment_form = ExperimentForm(data=request.POST, instance=e)
         if experiment_form.is_valid():
             exp_instance = experiment_form.save()
 
-        return HttpResponseRedirect('/fakesearch/experiment/')
+        if 'next' in request.POST:
+            e = next_exp
+        if 'previous' in request.POST:
+            e = previous_exp
+        if 'done' in request.POST:
+            return HttpResponseRedirect(reverse('fakesearch:experiment'))
+        return HttpResponseRedirect(reverse('fakesearch:run_experiment', args=(e.id,)))
 
     # it is just the GET method:
     else:
