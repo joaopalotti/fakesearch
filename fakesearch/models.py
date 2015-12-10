@@ -17,7 +17,7 @@ LIST_PREFERENCE = (
 class UserProfile(models.Model):
     # This line is required. Links UserProfile to a User model instance.
     user = models.OneToOneField(User)
-    expertise = models.IntegerField(default=1)
+    expertise = models.IntegerField(default=-1)
 
     def __unicode__(self):
         return self.user.username
@@ -44,8 +44,6 @@ class ResultList(models.Model):
 
     def __unicode__(self):
         return self.description
-        #return "%s, First doc: %s " % (self.query.text, self.doclist.all()[0].docname)
-        #return self.rlid
 
 class ListOrder(models.Model):
     document = models.ForeignKey(Document, on_delete=models.CASCADE)
@@ -62,7 +60,6 @@ class Experiment(models.Model):
 
     def __unicode__(self):
         return "%s,%s,%s" % (self.query.qid, self.result_listA, self.result_listB)
-        # return str(self.expid)
 
 class ExperimentSet(models.Model):
     description = models.CharField(max_length=256)
@@ -79,5 +76,4 @@ class Vote(models.Model):
 
     def user_preference(self):
         return dict(LIST_PREFERENCE)[self.preference]
-
 

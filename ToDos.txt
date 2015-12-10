@@ -16,3 +16,4 @@ X (15) Change view experiment to experiments
   (16) Update soft links using reverse in views.py
 X (17) Add concept of ExperimentSet
 X (18) Link new users to UserExperimentSet
+  (19) Fix problems with Register screen. Apart of (13), the errors are not correctly displayed

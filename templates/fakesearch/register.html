@@ -13,7 +13,9 @@
             {{ user_form  }}
             <br/>
             <br/>
+            <p> Medical Expertise </p> 
             <div class="btn-group" data-toggle="buttons">
+                {{ profile_form.expertise.errors }}
                 {% for choice in profile_form.expertise %}
                     <label class="btn btn-primary ">
                         {{ choice.tag }}
