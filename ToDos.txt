@@ -11,4 +11,4 @@ X (6) Change the preference form to an official validation form from django
   (11) Add more information in the about tab
 X (12) Change the hard links in the html pages to soft django magic links
   (13) Make the register and login input text look the same.
-  (14) User has access to only his experiments
+X (14) User has access to only his experiments

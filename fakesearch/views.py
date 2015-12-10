@@ -156,8 +156,14 @@ def experiment(request):
 @login_required
 def run_experiment(request, exp_pk):
 
-    # TODO: check if experiment belongs to this user
-    e = get_object_or_404(Experiment, pk=exp_pk)
+    context = RequestContext(request)
+    u = User.objects.get(username=request.user)
+    try:
+        up = UserProfile.objects.get(user=u)
+    except:
+        up = None
+
+    e = get_object_or_404(Experiment, pk=exp_pk, user=up)
     context_dict = {'experiment' : e}
 
     if request.method == 'POST':
