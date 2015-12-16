@@ -9,9 +9,9 @@ EXPERTISE_CHOICES = (
 )
 
 LIST_PREFERENCE = (
-    (1, 'Left List'),
-    (2, 'None'),
-    (3, 'Right List'),
+    (1, 'Left Better'),
+    (2, 'Equal'),
+    (3, 'Right Better'),
 )
 
 class UserProfile(models.Model):
