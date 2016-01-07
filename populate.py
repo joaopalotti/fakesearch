@@ -17,9 +17,9 @@ def populate():
     query_2 = add_query("2", "Query 2")
     query_3 = add_query("3", "This is query 3!")
 
-    document_1 = add_document("1", "Document title 1", "This is the text of document 1", "http://example1.com")
-    document_2 = add_document("2", "Document title 2", "This is the text of document 2", "http://example2.com")
-    document_3 = add_document("3", "Document title 3", "This is the text of document 3", "http://example3.com")
+    document_1 = add_document("1", "Document title 1", "<strong>...</strong>answers <strong>Cancer</strong> Dental Health Depression General Health Health Fitness Health Food Men Health Mental Health Pills Stress Weight Loss Women Health Answered Health Questions : Addictions- Alcohol Abuse- Stop SmokingAlternative Medicine- Herbal medicine<strong>Cancer</strong>- Bile Duct <strong>Cancer</strong>- Bladder <strong>Cancer</strong>- Bone <strong>Cancer</strong>- Brain <strong>Cancer</strong>- Breast <strong>Cancer- Cancer</strong> Treatment Methods- Carcinoid <strong>Cancer</strong>- Cervical Cancer- Colon &amp; Rectal Cancer- Esophageal Cancer- Eye Cancer- Gallbladder Cancer- Head and Neck Cancer<strong>...</strong>", "http://example1.com")
+    document_2 = add_document("2", "Document title 2", "MARK Removal - Marcia Davis Advisory Board Our Mission Advertise Patient Reviews Home About Stretch Marks What...Stretch Mark Removal - Marcia Davis Advisory Board Our Mission Advertise Patient Reviews Home About Stretch MARKS What Causes Them Pregnancy Prevention Diet and Nutrition FAQ's Choosing a Doctor Stretch Mark Removal...", "http://example2.com")
+    document_3 = add_document("3", "Document title 3", "MARK Removal - Pamela A. Penner Advisory Board Our Mission Advertise Patient Reviews Home About Stretch Marks...Mark Removal - Pamela A. Penner Advisory Board Our Mission Advertise Patient Reviews Home About Stretch MARKS What Causes Them Pregnancy Prevention Diet and Nutrition FAQ's Choosing a Doctor Stretch Mark Removal...", "http://example3.com")
     document_4 = add_document("4", "Document title 4", "This is the text of document 4", "http://example4.com")
     document_5 = add_document("5", "Document title 5", "This is the text of document 5", "http://example5.com")
     document_6 = add_document("6", "Document title 6", "This is the text of document 6", "http://example6.com")
@@ -51,29 +51,31 @@ def populate():
             list_order.save()
 
     experiment_set_l1 = []
-    experiment_set_l1.append( add_experiment(query_1, resultlist[0], resultlist[2], -1) )
-    experiment_set_l1.append( add_experiment(query_1, resultlist[1], resultlist[0], -1) )
-    experiment_set_l1.append( add_experiment(query_1, resultlist[2], resultlist[1], -1) )
-    experiment_set_l1.append( add_experiment(query_1, resultlist[1], resultlist[1], -1) )
+    experiment_set_l1.append( add_experiment(query_1, resultlist[0], resultlist[2]) )
+    experiment_set_l1.append( add_experiment(query_1, resultlist[1], resultlist[0]) )
+    experiment_set_l1.append( add_experiment(query_1, resultlist[2], resultlist[1]) )
+    experiment_set_l1.append( add_experiment(query_1, resultlist[1], resultlist[1]) )
     # -----
     experiment_set_l2 = []
-    experiment_set_l2.append( add_experiment(query_1, resultlist[0], resultlist[2], -1) )
-    experiment_set_l2.append( add_experiment(query_1, resultlist[0], resultlist[4], -1) )
-    experiment_set_l2.append( add_experiment(query_1, resultlist[1], resultlist[3], -1) )
+    experiment_set_l2.append( add_experiment(query_1, resultlist[0], resultlist[2]) )
+    experiment_set_l2.append( add_experiment(query_1, resultlist[0], resultlist[4]) )
+    experiment_set_l2.append( add_experiment(query_1, resultlist[1], resultlist[3]) )
     # -----
     experiment_set_l3 = []
-    experiment_set_l3.append( add_experiment(query_2, resultlist[2], resultlist[5], -1) )
-    experiment_set_l3.append( add_experiment(query_1, resultlist[2], resultlist[5], -1) )
-    experiment_set_l3.append( add_experiment(query_3, resultlist[1], resultlist[3], -1) )
+    experiment_set_l3.append( add_experiment(query_2, resultlist[2], resultlist[5]) )
+    experiment_set_l3.append( add_experiment(query_1, resultlist[2], resultlist[5]) )
+    experiment_set_l3.append( add_experiment(query_3, resultlist[1], resultlist[3]) )
 
-    experiment_set_1 = add_experiment_set("", experiment_set_l1)
-    experiment_set_2 = add_experiment_set("", experiment_set_l2)
-    experiment_set_3 = add_experiment_set("", experiment_set_l3)
+    experiment_set_1 = add_experiment_set("Experiment Set 1", experiment_set_l1)
+    experiment_set_2 = add_experiment_set("Experiment Set 2", experiment_set_l2)
+    experiment_set_3 = add_experiment_set("Experiment Set 3", experiment_set_l3)
 
     experiment_set_to_james = attributes_experiment_set(user_james, experiment_set_1)
     experiment_set_to_paul  = attributes_experiment_set(user_paul, experiment_set_1)
     experiment_set_to_john  = attributes_experiment_set(user_john, experiment_set_3)
 
+    # Need to add some invalid votes (-1) to initialize the relationship between person
+    # and experiments
     add_votes(user_james, experiment_set_to_james)
     add_votes(user_paul, experiment_set_to_paul)
     add_votes(user_john, experiment_set_to_john)
@@ -126,7 +128,7 @@ def add_resultlist(desc, doclists=[]):
         c.doclist.add(l)
     return c
 
-def add_experiment(query, listA, listB, preference):
+def add_experiment(query, listA, listB):
     e = Experiment.objects.create(result_listA=listA, result_listB=listB, query=query)
     e.save()
     return e

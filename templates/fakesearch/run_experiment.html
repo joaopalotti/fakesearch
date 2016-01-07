@@ -30,9 +30,9 @@
                 <ul class="list-group" style="text-align: left">
                 {% for document in experiment.result_listA.doclist.all %}
                 <li class="list-group-item">
-                <span class="doctitle"> {{document.title}}  </span> <br \>
-                <span class="docurl"> {{document.url}} <br \> </span>
-                    {{document.snippet}} <br \>
+                <span class="doctitle"> {{document.title| truncatechars:50}}  </span> <br \>
+                <span class="docurl"> {{document.url | truncatechars:60}} <br \> </span>
+                    {{document.snippet| safe | truncatechars_html:200 }} <br \>
                 </li>
                 {% endfor %}
                 </ul>
@@ -43,9 +43,9 @@
                 <ul class="list-group" style="text-align: left">
                 {% for document in experiment.result_listB.doclist.all %}
                 <li class="list-group-item">
-                <span class="doctitle"> {{document.title}}  </span> <br \>
-                <span class="docurl"> {{document.url}} <br \> </span>
-                    {{document.snippet}} <br \>
+                <span class="doctitle"> {{document.title| truncatechars:50}}  </span> <br \>
+                <span class="docurl"> {{document.url | truncatechars:60}} <br \> </span>
+                    {{document.snippet | safe | truncatechars_html:200 }} <br \>
                 </li>
                 {% endfor %}
                 </ul>
